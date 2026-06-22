@@ -126,11 +126,10 @@ canvas {
 }
 
 .badge {
-  position: absolute;
-  top: 24px;
-  left: 24px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 12px;
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
