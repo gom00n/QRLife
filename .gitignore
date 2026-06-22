@@ -1,0 +1,7 @@
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+
+# Claude Code preview/local tooling (not part of the site)
+.claude/
+serve.ps1

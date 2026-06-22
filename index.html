@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QRLife — QR Code Game of Life</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>QR<span>Life</span></h1>
+      <p class="tagline">Turn any link or text into a QR code, then watch it come alive in Conway's Game of Life.</p>
+    </header>
+
+    <section class="controls-panel">
+      <label for="input" class="field-label">Link or text</label>
+      <div class="input-row">
+        <input
+          id="input"
+          type="text"
+          placeholder="https://example.com  or  any text…"
+          value="https://github.com"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="generate" class="btn primary">Generate</button>
+      </div>
+      <p id="error" class="error" hidden></p>
+    </section>
+
+    <section class="stage" id="stage" hidden>
+      <div class="canvas-wrap">
+        <canvas id="canvas" width="600" height="600" aria-label="Game of Life simulation"></canvas>
+        <div class="badge"><span id="genCount">Gen 0</span><span id="popCount">Pop 0</span><span id="status" class="status">Evolving…</span></div>
+      </div>
+
+      <div class="playbar">
+        <button id="playPause" class="btn">▶ Play</button>
+        <button id="step" class="btn">⏭ Step</button>
+        <button id="reset" class="btn">↺ Reset to QR</button>
+
+        <label class="speed">
+          Speed
+          <input id="speed" type="range" min="1" max="30" value="8" />
+        </label>
+
+        <label class="toggle">
+          <input id="wrap" type="checkbox" checked />
+          Wrap edges
+        </label>
+
+        <label class="toggle">
+          <input id="ghost" type="checkbox" checked />
+          QR ghost
+        </label>
+      </div>
+
+      <p class="hint">
+        The QR seeds generation 0. Each living cell follows Conway's rules — and the QR pattern fades in behind as a "ghost"
+        so you can see how far the simulation has drifted from the original code.
+      </p>
+    </section>
+  </div>
+
+  <!-- QR encoder (self-contained, no network needed). -->
+  <script src="qrcode.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
