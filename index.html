@@ -10,7 +10,11 @@
   <div class="app">
     <header>
       <h1>QR<span>Life</span></h1>
-      <p class="tagline">Turn any link or text into a QR code, then watch it come alive in Conway's Game of Life.</p>
+      <p class="tagline">Turn any link or text into a QR code, then watch it come alive in
+        <span class="gol-term" tabindex="0" role="button" aria-label="What is Conway's Game of Life?">Conway's Game of Life<span class="gol-pop" role="tooltip">
+          <canvas id="golDemo" width="120" height="120" aria-hidden="true"></canvas>
+          <p><strong>A tiny universe on a grid.</strong> Every cell is alive or dead, and on each step four rules decide its fate: a live cell stays alive with 2&ndash;3 live neighbours, otherwise it dies (loneliness or overcrowding); a dead cell with exactly 3 live neighbours is born. From these simple rules, patterns drift, blink, and travel &mdash; like the gliders above.</p>
+        </span></span>.</p>
     </header>
 
     <section class="controls-panel">

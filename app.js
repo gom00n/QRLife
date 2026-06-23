@@ -328,4 +328,84 @@
 
   // Generate the default value on load so there's something to see.
   generate();
+
+  // ---- Mini Game of Life demo (inside the "Conway's Game of Life" popover) ----
+  // Runs only while the term is hovered/focused. Two parallel gliders crawl
+  // across a wrapped grid forever, illustrating "patterns that travel".
+  (function setupDemo() {
+    const term = document.querySelector(".gol-term");
+    const demoCanvas = document.getElementById("golDemo");
+    if (!term || !demoCanvas) return;
+
+    const dctx = demoCanvas.getContext("2d");
+    const N = 24;                       // cells per side
+    const PX = demoCanvas.width / N;    // 120 / 24 = 5px per cell
+    let dg = new Uint8Array(N * N);
+    let dn = new Uint8Array(N * N);
+    let demoTimer = null;
+
+    function seed() {
+      dg.fill(0);
+      const glider = [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]]; // travels down-right
+      const origins = [[2, 2], [13, 12]];
+      for (const [or, oc] of origins) {
+        for (const [r, c] of glider) {
+          dg[((or + r) % N) * N + ((oc + c) % N)] = 1;
+        }
+      }
+    }
+
+    function drawDemo() {
+      dctx.fillStyle = "#0c0e14";
+      dctx.fillRect(0, 0, demoCanvas.width, demoCanvas.height);
+      dctx.fillStyle = "#4ade80";
+      for (let r = 0; r < N; r++) {
+        for (let c = 0; c < N; c++) {
+          if (dg[r * N + c]) dctx.fillRect(c * PX, r * PX, PX, PX);
+        }
+      }
+    }
+
+    function stepDemo() {
+      for (let r = 0; r < N; r++) {
+        for (let c = 0; c < N; c++) {
+          let live = 0;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (dr === 0 && dc === 0) continue;
+              const rr = (r + dr + N) % N;
+              const cc = (c + dc + N) % N;
+              live += dg[rr * N + cc];
+            }
+          }
+          const i = r * N + c;
+          dn[i] = dg[i] ? (live === 2 || live === 3 ? 1 : 0) : (live === 3 ? 1 : 0);
+        }
+      }
+      const tmp = dg;
+      dg = dn;
+      dn = tmp;
+      drawDemo();
+    }
+
+    function start() {
+      if (demoTimer) return;
+      seed();
+      drawDemo();
+      demoTimer = setInterval(stepDemo, 150);
+    }
+    function stop() {
+      if (demoTimer) {
+        clearInterval(demoTimer);
+        demoTimer = null;
+      }
+    }
+
+    seed();
+    drawDemo(); // show a static frame before first hover
+    term.addEventListener("mouseenter", start);
+    term.addEventListener("mouseleave", stop);
+    term.addEventListener("focus", start);
+    term.addEventListener("blur", stop);
+  })();
 })();
